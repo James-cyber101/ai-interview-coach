@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume - AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .upload-zone {
+            border: 2px dashed var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--bg-glass);
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--accent-blue);
+            background: rgba(79, 124, 255, 0.05);
+        }
+
+        .upload-zone .upload-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #4f7cff, #7c5cff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .upload-zone .upload-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .profile-section {
+            margin-top: 40px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: var(--radius-xl);
+            font-size: 13px;
+            font-weight: 500;
+            margin: 4px;
+        }
+
+        .strength-item,
+        .weakness-item {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .strength-item {
+            background: rgba(0, 230, 118, 0.1);
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .weakness-item {
+            background: rgba(255, 145, 0, 0.1);
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        .tab-controls {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: var(--bg-glass);
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/interview">Interview</a>
+            <a href="/report">Report</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}<div class="flash-msg {{ category }}">{{ message }}</div>{% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="page-container">
+        <div class="page-header animate-fade-in">
+            <h1>Resume Analysis</h1>
+            <p>Upload your resume to get an instant profile breakdown</p>
+        </div>
+
+        {% if not show_results %}
+        <div style="max-width:700px; margin:0 auto;">
+            <div class="tab-controls">
+                <button class="tab-btn active" onclick="showTab('upload')">Upload File</button>
+                <button class="tab-btn" onclick="showTab('paste')">Paste Text</button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" id="upload-form">
+                <div id="tab-upload" class="animate-fade-in">
+                    <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z" />
+                            </svg>
+                        </div>
+                        <h3 style="margin-bottom:8px;">Drop your resume here</h3>
+                        <p style="color:var(--text-muted); font-size:14px;">or click to browse - PDF or TXT (max 5MB)
+                        </p>
+                        <input type="file" id="file-input" name="resume_file" accept=".pdf,.txt" style="display:none">
+                        <p id="file-name"
+                            style="color:var(--accent-green); margin-top:12px; font-weight:600; display:none;"></p>
+                    </div>
+                </div>
+
+                <div id="tab-paste" style="display:none;" class="animate-fade-in">
+                    <textarea name="resume_text" class="form-input" rows="12"
+                        placeholder="Paste your resume text here...&#10;&#10;Include your education, skills, projects, and experience."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:24px;">
+                    Analyze Resume
+                </button>
+            </form>
+        </div>
+
+        {% else %}
+        <div class="profile-section animate-fade-in">
+
+            <div class="grid-2" style="margin-bottom:32px;">
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Technical Skills</h3>
+                    {% for category, skills in profile.skills.items() %}
+                    <div style="margin-bottom:12px;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">
+                            {{ category.replace('_',' ') }}</div>
+                        {% for skill in skills %}
+                        <span class="skill-tag badge-blue">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% if profile.soft_skills %}
+                    <div style="margin-top:12px;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">
+                            Soft Skills</div>
+                        {% for s in profile.soft_skills %}
+                        <span class="skill-tag badge-purple">{{ s }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Education & Projects</h3>
+                    {% if profile.education %}
+                    <div style="margin-bottom:16px;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">
+                            Education</div>
+                        {% for e in profile.education %}
+                        <span class="skill-tag badge-green">{{ e }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if profile.projects %}
+                    <div>
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">
+                            Projects</div>
+                        {% for p in profile.projects %}
+                        <div
+                            style="padding:8px 0; border-bottom:1px solid var(--border-glass); font-size:14px; color:var(--text-secondary);">
+                            {{ p }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Strengths</h3>
+                    {% for s in profile.strengths %}
+                    <div class="strength-item">{{ s }}</div>
+                    {% endfor %}
+                    {% if not profile.strengths %}
+                    <p style="color:var(--text-muted);">No specific strengths identified. Add more details to your
+                        resume.</p>
+                    {% endif %}
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Areas to Improve</h3>
+                    {% for w in profile.weaknesses %}
+                    <div class="weakness-item">{{ w }}</div>
+                    {% endfor %}
+                    {% if not profile.weaknesses %}
+                    <p style="color:var(--text-muted);">No major gaps found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:40px;" class="animate-fade-in animate-delay-2">
+                <h3 style="margin-bottom:16px;">Ready for the next step?</h3>
+                <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+                    <a href="/roles" class="btn btn-primary btn-lg">Take Written Test</a>
+                    <a href="/interview" class="btn btn-outline btn-lg">Start Interview</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function showTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-upload').style.display = tab === 'upload' ? 'block' : 'none';
+            document.getElementById('tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
+            event.target.classList.add('active');
+        }
+
+        const dz = document.getElementById('dropzone');
+        const fi = document.getElementById('file-input');
+        if (dz) {
+            dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+            dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+            dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); fi.files = e.dataTransfer.files; showFileName(); });
+            fi.addEventListener('change', showFileName);
+        }
+        function showFileName() {
+            const fn = document.getElementById('file-name');
+            if (fi.files.length) { fn.textContent = fi.files[0].name; fn.style.display = 'block'; }
+        }
+
+        setTimeout(() => {
+            document.querySelectorAll('.flash-msg').forEach(el => {
+                el.style.transition = 'opacity 0.5s'; el.style.opacity = '0';
+                setTimeout(() => el.remove(), 500);
+            });
+        }, 4000);
+    </script>
+
+</body>
+
+</html>

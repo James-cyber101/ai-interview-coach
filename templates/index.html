@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Coach - Ace Your Next Interview</title>
+    <meta name="description"
+        content="AI-powered interview preparation platform. Practice technical tests, simulate real interviews, and get instant feedback.">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            {% if user %}
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/interview">Interview</a>
+            <a href="/report">Report</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+            {% else %}
+            <a href="/login" class="btn-nav">Get Started</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <section class="page-container" style="padding-top:140px; text-align:center;">
+        <div class="animate-fade-in">
+            <div style="margin-bottom:20px;">
+                <div class="icon-feature"
+                    style="background:var(--gradient-primary); width:80px; height:80px; border-radius:20px; margin:0 auto;">
+                    <svg viewBox="0 0 24 24" style="width:42px;height:42px;">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+            </div>
+            <h1
+                style="font-size:56px; font-weight:900; margin-bottom:20px; background:linear-gradient(135deg,#f0f2ff,#4f7cff,#7c5cff); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+                Master Your Tech Interview
+            </h1>
+            <p style="font-size:20px; color:var(--text-secondary); max-width:700px; margin:0 auto 40px;">
+                AI-powered simulation of real company hiring processes. Resume analysis, written tests,
+                live interview rounds, and detailed performance reports.
+            </p>
+            <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+                {% if user %}
+                <a href="/upload_resume" class="btn btn-primary btn-lg">Upload Resume</a>
+                <a href="/roles" class="btn btn-outline btn-lg">Practice Test</a>
+                {% else %}
+                <a href="/login" class="btn btn-primary btn-lg">Start Free</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="display:flex; gap:48px; justify-content:center; margin-top:80px; flex-wrap:wrap;"
+            class="animate-fade-in animate-delay-2">
+            <div style="text-align:center;">
+                <div style="font-size:40px; font-weight:800; color:var(--accent-blue);">10+</div>
+                <div style="font-size:14px; color:var(--text-muted);">Tech Roles</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px; font-weight:800; color:var(--accent-purple);">200+</div>
+                <div style="font-size:14px; color:var(--text-muted);">Questions</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px; font-weight:800; color:var(--accent-cyan);">AI</div>
+                <div style="font-size:14px; color:var(--text-muted);">Interviewer</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px; font-weight:800; color:var(--accent-green);">Real</div>
+                <div style="font-size:14px; color:var(--text-muted);">Feedback</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-container" style="padding-top:40px;">
+        <div class="page-header animate-fade-in">
+            <h2 style="font-size:36px; font-weight:800; color:var(--text-primary);">Complete Hiring Simulation</h2>
+            <p>Experience every stage of a real tech interview</p>
+        </div>
+
+        <div class="grid-3">
+            <div class="glass-card animate-fade-in animate-delay-1" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#4f7cff,#00d4ff);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM6 20V4h5v7h7v9H6z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">Resume Analysis</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">Upload your resume and get instant skill
+                    extraction, strength/weakness analysis, and role recommendations.</p>
+            </div>
+
+            <div class="glass-card animate-fade-in animate-delay-2" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#7c5cff,#f050a0);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">Written Assessment</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">Aptitude, MCQs, and coding questions modeled
+                    after TCS NQT, Infosys, and top company assessments.</p>
+            </div>
+
+            <div class="glass-card animate-fade-in animate-delay-3" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#00e676,#00d4ff);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">AI Interview</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">HR + Technical rounds with dynamic follow-up
+                    questions. Simulates real interview pressure.</p>
+            </div>
+
+            <div class="glass-card animate-fade-in animate-delay-1" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#ff9100,#ffab40);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">Answer Evaluation</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">Every answer scored on correctness, clarity, and
+                    communication. Detailed improvement suggestions.</p>
+            </div>
+
+            <div class="glass-card animate-fade-in animate-delay-2" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#f050a0,#ff5252);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">Scoring System</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">Technical Score, Communication Score, and a
+                    clear Hiring Recommendation: Selected, Rejected, or Needs Improvement.</p>
+            </div>
+
+            <div class="glass-card animate-fade-in animate-delay-3" style="text-align:center;">
+                <div class="icon-feature" style="background:linear-gradient(135deg,#4f7cff,#7c5cff);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z" />
+                    </svg>
+                </div>
+                <h3 style="font-weight:700; margin-bottom:8px;">Full Report</h3>
+                <p style="color:var(--text-secondary); font-size:14px;">Comprehensive report with charts, per-question
+                    analysis, and actionable tips.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-container" style="padding-top:40px;">
+        <div class="page-header animate-fade-in">
+            <h2 style="font-size:36px; font-weight:800; color:var(--text-primary);">How It Works</h2>
+        </div>
+        <div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap;">
+            <div class="glass-card animate-fade-in" style="text-align:center; flex:1; min-width:200px;">
+                <div
+                    style="width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800;font-size:20px;">
+                    1</div>
+                <h4>Login</h4>
+                <p style="color:var(--text-muted);font-size:13px;">Create your account</p>
+            </div>
+            <div style="display:flex;align-items:center;color:var(--text-muted);font-size:24px;">&#8594;</div>
+            <div class="glass-card animate-fade-in animate-delay-1" style="text-align:center; flex:1; min-width:200px;">
+                <div
+                    style="width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800;font-size:20px;">
+                    2</div>
+                <h4>Upload Resume</h4>
+                <p style="color:var(--text-muted);font-size:13px;">Get your profile analyzed</p>
+            </div>
+            <div style="display:flex;align-items:center;color:var(--text-muted);font-size:24px;">&#8594;</div>
+            <div class="glass-card animate-fade-in animate-delay-2" style="text-align:center; flex:1; min-width:200px;">
+                <div
+                    style="width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800;font-size:20px;">
+                    3</div>
+                <h4>Take Test</h4>
+                <p style="color:var(--text-muted);font-size:13px;">Aptitude + Technical MCQs</p>
+            </div>
+            <div style="display:flex;align-items:center;color:var(--text-muted);font-size:24px;">&#8594;</div>
+            <div class="glass-card animate-fade-in animate-delay-3" style="text-align:center; flex:1; min-width:200px;">
+                <div
+                    style="width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800;font-size:20px;">
+                    4</div>
+                <h4>Interview</h4>
+                <p style="color:var(--text-muted);font-size:13px;">HR + Technical AI rounds</p>
+            </div>
+            <div style="display:flex;align-items:center;color:var(--text-muted);font-size:24px;">&#8594;</div>
+            <div class="glass-card animate-fade-in animate-delay-4" style="text-align:center; flex:1; min-width:200px;">
+                <div
+                    style="width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800;font-size:20px;">
+                    5</div>
+                <h4>Get Report</h4>
+                <p style="color:var(--text-muted);font-size:13px;">Scores + Recommendation</p>
+            </div>
+        </div>
+    </section>
+
+    <footer
+        style="text-align:center; padding:40px 20px; margin-top:60px; border-top:1px solid var(--border-glass); position:relative; z-index:1;">
+        <p style="color:var(--text-muted); font-size:14px;">&copy; 2026 AI Interview Coach - Built for Excellence</p>
+    </footer>
+
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-msg').forEach(el => {
+                el.style.transition = 'opacity 0.5s';
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 500);
+            });
+        }, 4000);
+    </script>
+
+</body>
+
+</html>

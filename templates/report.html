@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Report - AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .report-hero {
+            text-align: center;
+            padding: 48px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-glow);
+            pointer-events: none;
+        }
+
+        .recommendation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border-radius: var(--radius-xl);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .scores-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 32px;
+        }
+
+        .score-ring {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .score-ring::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--gradient-primary);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .score-ring .val {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .score-ring .lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tip-card {
+            padding: 14px 18px;
+            background: rgba(79, 124, 255, 0.06);
+            border: 1px solid rgba(79, 124, 255, 0.15);
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .improvement-card {
+            padding: 14px 18px;
+            background: rgba(255, 145, 0, 0.06);
+            border-left: 3px solid var(--accent-orange);
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .strength-card {
+            padding: 14px 18px;
+            background: rgba(0, 230, 118, 0.06);
+            border-left: 3px solid var(--accent-green);
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .scores-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/interview">Interview</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header animate-fade-in">
+            <h1>Comprehensive Report</h1>
+            <p>Your complete performance breakdown</p>
+        </div>
+
+        <div class="glass-card report-hero animate-fade-in">
+            {% if report.recommendation %}
+            <div class="recommendation-badge"
+                style="background:{{ report.recommendation.color }}20; color:{{ report.recommendation.color }}; border:2px solid {{ report.recommendation.color }}40;">
+                {{ report.recommendation.badge }} {{ report.recommendation.decision }}
+            </div>
+            <p style="color:var(--text-secondary); max-width:600px; margin:0 auto; font-size:15px;">
+                {{ report.recommendation.summary }}
+            </p>
+            {% else %}
+            <div class="recommendation-badge" style="background:rgba(255,255,255,0.05);">
+                Complete both Test and Interview for a full recommendation
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="scores-row">
+            <div class="glass-card score-card animate-fade-in animate-delay-1">
+                <div class="score-ring">
+                    <div class="val" style="color:var(--accent-blue);">{{ report.technical_score }}</div>
+                    <div class="lbl">/ 100</div>
+                </div>
+                <div style="font-weight:600;">Technical Score</div>
+                <div style="font-size:13px; color:var(--text-muted);">Knowledge & Problem Solving</div>
+            </div>
+
+            <div class="glass-card score-card animate-fade-in animate-delay-2">
+                <div class="score-ring">
+                    <div class="val" style="color:var(--accent-purple);">{{ report.communication_score }}</div>
+                    <div class="lbl">/ 100</div>
+                </div>
+                <div style="font-weight:600;">Communication Score</div>
+                <div style="font-size:13px; color:var(--text-muted);">Clarity & Expression</div>
+            </div>
+
+            <div class="glass-card score-card animate-fade-in animate-delay-3">
+                <div class="score-ring">
+                    {% set oc = 'var(--accent-green)' if report.overall_score >= 70 else ('var(--accent-orange)' if
+                    report.overall_score >= 45 else 'var(--accent-red)') %}
+                    <div class="val" style="color:{{ oc }};">{{ report.overall_score }}</div>
+                    <div class="lbl">/ 100</div>
+                </div>
+                <div style="font-weight:600;">Overall Score</div>
+                <div style="font-size:13px; color:var(--text-muted);">Weighted Combined</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="glass-card animate-fade-in">
+                <div class="section-title">Strengths Identified</div>
+                {% for s in report.strengths_identified %}
+                <div class="strength-card">{{ s }}</div>
+                {% endfor %}
+                {% if not report.strengths_identified %}
+                <p style="color:var(--text-muted); font-size:14px;">Upload your resume to identify strengths.</p>
+                {% endif %}
+            </div>
+
+            <div class="glass-card animate-fade-in">
+                <div class="section-title">Areas to Improve</div>
+                {% for a in report.improvement_areas %}
+                <div class="improvement-card">{{ a }}</div>
+                {% endfor %}
+                {% if not report.improvement_areas %}
+                <p style="color:var(--text-muted); font-size:14px;">Complete the test and interview to see improvement
+                    areas.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if report.test_breakdown %}
+        <div class="glass-card animate-fade-in" style="margin-top:24px;">
+            <div class="section-title">Written Test Breakdown</div>
+            <div class="grid-3" style="margin-bottom:16px;">
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800; color:var(--accent-blue);">
+                        {{ report.test_breakdown.mcq_result.percentage if report.test_breakdown.mcq_result else 0 }}%
+                    </div>
+                    <div style="font-size:12px; color:var(--text-muted);">MCQ Score</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800; color:var(--accent-purple);">
+                        {{ report.test_breakdown.short_results|length if report.test_breakdown.short_results else 0 }}
+                    </div>
+                    <div style="font-size:12px; color:var(--text-muted);">Short Questions</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800; color:var(--accent-cyan);">
+                        {{ report.test_breakdown.coding_results|length if report.test_breakdown.coding_results else 0 }}
+                    </div>
+                    <div style="font-size:12px; color:var(--text-muted);">Coding Questions</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if report.interview_breakdown and report.interview_breakdown.total_questions %}
+        <div class="glass-card animate-fade-in" style="margin-top:24px;">
+            <div class="section-title">Interview Breakdown</div>
+            <div class="grid-3" style="margin-bottom:16px;">
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800;">{{ report.interview_breakdown.total_questions }}</div>
+                    <div style="font-size:12px; color:var(--text-muted);">Questions Answered</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800; color:var(--accent-blue);">{{
+                        report.interview_breakdown.avg_correctness }}</div>
+                    <div style="font-size:12px; color:var(--text-muted);">Avg Correctness</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:24px; font-weight:800; color:var(--accent-purple);">{{
+                        report.interview_breakdown.avg_communication }}</div>
+                    <div style="font-size:12px; color:var(--text-muted);">Avg Communication</div>
+                </div>
+            </div>
+
+            {% for entry in report.interview_breakdown.hr_answers + report.interview_breakdown.technical_answers %}
+            <div style="padding:12px 16px; border-bottom:1px solid var(--border-glass);">
+                <div style="font-weight:600; font-size:14px; margin-bottom:4px;">{{ entry.question }}</div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <span
+                        class="badge {{ 'badge-green' if entry.evaluation.overall_score >= 70 else ('badge-orange' if entry.evaluation.overall_score >= 40 else 'badge-red') }}">
+                        {{ entry.evaluation.overall_score }}/100
+                    </span>
+                    <span style="font-size:12px; color:var(--text-muted);">{{ entry.evaluation.feedback }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="glass-card animate-fade-in" style="margin-top:24px;">
+            <div class="section-title">Expert Tips</div>
+            {% for tip in report.tips %}
+            <div class="tip-card">{{ tip }}</div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding-bottom:40px;" class="animate-fade-in">
+            <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+                <a href="/roles" class="btn btn-primary btn-lg">Retake Test</a>
+                <a href="/interview" class="btn btn-outline btn-lg">Redo Interview</a>
+                <a href="/api/report" class="btn btn-outline btn-lg" target="_blank">Export JSON</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

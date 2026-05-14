@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview — AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .interview-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr 280px;
+            gap: 24px;
+            min-height: calc(100vh - 160px);
+        }
+
+        /* ===== AI Avatar Panel (Left) ===== */
+        .avatar-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar-card {
+            text-align: center;
+            padding: 32px 24px;
+            width: 100%;
+        }
+
+        .avatar-ring {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a3e, #0d1329);
+            border: 3px solid var(--border-glass);
+            overflow: hidden;
+            transition: all 0.5s var(--ease-out);
+        }
+
+        .avatar-ring.speaking {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 40px rgba(79, 124, 255, 0.4), 0 0 80px rgba(79, 124, 255, 0.15);
+            animation: avatarPulse 1.5s infinite;
+        }
+
+        .avatar-ring.listening {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 40px rgba(0, 230, 118, 0.4), 0 0 80px rgba(0, 230, 118, 0.15);
+        }
+
+        @keyframes avatarPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .avatar-face {
+            font-size: 80px;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .avatar-face svg {
+            width: 80px;
+            height: 80px;
+            fill: var(--accent-blue);
+        }
+
+        .avatar-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .avatar-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .avatar-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-xl);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .avatar-status.speaking {
+            background: rgba(79, 124, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .avatar-status.listening {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+        }
+
+        .avatar-status.waiting {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Sound wave visualizer */
+        .sound-wave {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 40px;
+            margin: 16px 0;
+        }
+
+        .sound-wave .bar {
+            width: 4px;
+            border-radius: 2px;
+            background: var(--accent-blue);
+            transition: height 0.1s;
+            animation: none;
+        }
+
+        .sound-wave.active .bar {
+            animation: soundBar 0.5s infinite ease-in-out;
+        }
+
+        .sound-wave.active .bar:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .sound-wave.active .bar:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .sound-wave.active .bar:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .sound-wave.active .bar:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .sound-wave.active .bar:nth-child(5) {
+            animation-delay: 0.15s;
+        }
+
+        .sound-wave.active .bar:nth-child(6) {
+            animation-delay: 0.25s;
+        }
+
+        .sound-wave.active .bar:nth-child(7) {
+            animation-delay: 0.05s;
+        }
+
+        @keyframes soundBar {
+
+            0%,
+            100% {
+                height: 8px;
+            }
+
+            50% {
+                height: 32px;
+            }
+        }
+
+        /* ===== Chat Panel (Center) ===== */
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            max-height: 60vh;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            align-items: flex-end;
+        }
+
+        .chat-input-area textarea {
+            flex: 1;
+            padding: 16px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            min-height: 60px;
+            max-height: 120px;
+        }
+
+        .chat-input-area textarea:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* Mic button */
+        .mic-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            border: 2px solid var(--border-glass);
+            background: var(--bg-glass);
+            color: var(--text-secondary);
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .mic-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .mic-btn.recording {
+            background: rgba(255, 23, 68, 0.2);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            animation: pulse 1s infinite;
+        }
+
+        /* ===== Sidebar (Right) ===== */
+        .sidebar-panel .glass-card {
+            margin-bottom: 16px;
+            padding: 20px;
+        }
+
+        .round-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .round-hr {
+            background: rgba(79, 124, 255, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .round-tech {
+            background: rgba(124, 92, 255, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .eval-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--bg-glass);
+            margin-top: 6px;
+        }
+
+        .eval-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s var(--ease-out);
+        }
+
+        /* Role selection modal */
+        .role-select-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        .role-modal-card {
+            width: 440px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: pulse 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Voice control bar */
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+        }
+
+        .voice-controls label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .voice-controls input[type="checkbox"] {
+            accent-color: var(--accent-blue);
+        }
+
+        .voice-controls select {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glass);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-family: var(--font-main);
+        }
+
+        @media (max-width: 1024px) {
+            .interview-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar-panel {
+                order: -1;
+            }
+
+            .avatar-card {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                text-align: left;
+                padding: 20px;
+            }
+
+            .avatar-ring {
+                width: 80px;
+                height: 80px;
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+            .avatar-face {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24">
+                </svg></span> <span>AI Interview Coach</span></a>
+        <nav>
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/report">Report</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+        </nav>
+    </header>
+
+    <!-- ===== Role Selection Modal ===== -->
+    <div class="role-select-modal" id="role-modal">
+        <div class="glass-card role-modal-card animate-fade-in">
+            <div style="margin-bottom:16px;">
+                <div class="icon-feature"
+                    style="background:linear-gradient(135deg,#00e676,#00d4ff); width:72px; height:72px; border-radius:18px; margin:0 auto;">
+                    <svg viewBox="0 0 24 24" style="width:36px;height:36px;">
+                        <path
+                            d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                    </svg>
+                </div>
+            </div>
+            <h2 style="margin-bottom:8px;">Start Your Interview</h2>
+            <p style="color:var(--text-secondary); font-size:14px; margin-bottom:24px;">Select your role and meet your
+                AI interviewer</p>
+            <select id="interview-role" class="form-input" style="margin-bottom:16px;">
+                <option value="software_engineer">Software Engineer</option>
+                <option value="data_scientist">Data Scientist</option>
+                <option value="data_analyst">Data Analyst</option>
+                <option value="ai_engineer">AI Engineer</option>
+                <option value="backend_engineer">Backend Engineer</option>
+                <option value="frontend_engineer">Frontend Engineer</option>
+                <option value="ml_engineer">ML Engineer</option>
+                <option value="full_stack_developer">Full Stack Developer</option>
+                <option value="devops_engineer">DevOps Engineer</option>
+                <option value="cybersecurity_engineer">Cybersecurity Engineer</option>
+            </select>
+            <div style="margin-bottom:20px;">
+                <label
+                    style="display:flex; align-items:center; gap:8px; justify-content:center; font-size:14px; color:var(--text-secondary); cursor:pointer;">
+                    <input type="checkbox" id="enable-voice-modal" checked style="accent-color:var(--accent-blue);">
+                    Enable Voice Interaction
+                </label>
+            </div>
+            <button class="btn btn-primary btn-lg" style="width:100%;" onclick="startInterview()">Begin
+                Interview</button>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="interview-layout">
+
+            <!-- ===== LEFT: AI Avatar Panel ===== -->
+            <div class="avatar-panel">
+                <div class="glass-card avatar-card">
+                    <div class="avatar-ring" id="avatar-ring">
+                        <div class="avatar-face" id="avatar-face"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg></div>
+                    </div>
+                    <div>
+                        <div class="avatar-name" id="avatar-name">Priya Sharma</div>
+                        <div class="avatar-title" id="avatar-title">Senior Technical Recruiter</div>
+                        <div class="avatar-status waiting" id="avatar-status">
+                            <div class="status-dot"></div>
+                            <span id="status-text">Waiting...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sound Visualizer -->
+                <div class="glass-card" style="padding:20px; width:100%; text-align:center;">
+                    <div
+                        style="font-size:11px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                        Audio Activity</div>
+                    <div class="sound-wave" id="sound-wave">
+                        <div class="bar" style="height:8px;"></div>
+                        <div class="bar" style="height:12px;"></div>
+                        <div class="bar" style="height:8px;"></div>
+                        <div class="bar" style="height:20px;"></div>
+                        <div class="bar" style="height:8px;"></div>
+                        <div class="bar" style="height:16px;"></div>
+                        <div class="bar" style="height:8px;"></div>
+                    </div>
+                    <div id="voice-status-text" style="font-size:12px; color:var(--text-muted); margin-top:8px;">Voice
+                        idle</div>
+                </div>
+
+                <!-- Interview Tips -->
+                <div class="glass-card" style="padding:20px; width:100%;">
+                    <div
+                        style="font-size:11px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                        Tips</div>
+                    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">• Speak clearly and
+                        confidently</div>
+                    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">• Use the STAR method
+                        for examples</div>
+                    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">• Click the mic or
+                        press <kbd style="background:var(--bg-glass);padding:2px 6px;border-radius:4px;">Space</kbd> to
+                        talk</div>
+                    <div style="font-size:13px; color:var(--text-secondary);">• You can also type your answers</div>
+                </div>
+            </div>
+
+            <!-- ===== CENTER: Chat Panel ===== -->
+            <div class="chat-panel">
+                <div class="chat-container" id="chat-container">
+                    <div style="text-align:center; color:var(--text-muted); padding:40px;">
+                        <div style="margin-bottom:12px;"><svg viewBox="0 0 24 24"
+                                style="width:48px;height:48px;fill:var(--accent-blue);">
+                                <path
+                                    d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                            </svg></div>
+                        <p>Your AI interview will start shortly...</p>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <button class="mic-btn" id="mic-btn" onclick="toggleMic()"
+                        title="Click to speak (or press Space)"><svg viewBox="0 0 24 24"
+                            style="width:22px;height:22px;fill:currentColor;">
+                            <path
+                                d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" />
+                        </svg></button>
+                    <textarea id="answer-input" placeholder="Type your answer or click the mic to speak..."
+                        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAnswer();}"></textarea>
+                    <button class="btn btn-primary" onclick="sendAnswer()" id="send-btn">Send →</button>
+                </div>
+
+                <!-- Voice Controls -->
+                <div class="voice-controls">
+                    <label>
+                        <input type="checkbox" id="voice-enabled" checked>
+                        Interviewer Voice
+                    </label>
+                    <label>
+                        <input type="checkbox" id="auto-listen">
+                        Auto-listen after question
+                    </label>
+                    <select id="voice-select" title="Interviewer voice"></select>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT: Sidebar ===== -->
+            <div class="sidebar-panel">
+                <div class="glass-card">
+                    <div
+                        style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                        Current Round</div>
+                    <div class="round-indicator round-hr" id="round-display">HR Round</div>
+                </div>
+
+                <div class="glass-card">
+                    <div
+                        style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                        Progress</div>
+                    <div id="progress-text" style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
+                        Question 0 / 0</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width:0%;"></div>
+                    </div>
+                </div>
+
+                <div class="glass-card" id="last-eval" style="display:none;">
+                    <div
+                        style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                        Last Answer Evaluation</div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:13px; color:var(--text-secondary);">Correctness</span>
+                        <div class="eval-bar">
+                            <div class="eval-bar-fill" id="eval-correct"
+                                style="width:0%;background:var(--accent-blue);"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:13px; color:var(--text-secondary);">Communication</span>
+                        <div class="eval-bar">
+                            <div class="eval-bar-fill" id="eval-comm" style="width:0%;background:var(--accent-purple);">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="eval-feedback"
+                        style="font-size:13px; color:var(--text-secondary); margin-top:12px; padding:10px; background:var(--bg-glass); border-radius:var(--radius-sm);">
+                    </div>
+                </div>
+
+                <button class="btn btn-danger" style="width:100%;" onclick="endInterview()" id="end-btn" disabled>
+                    End Interview & Get Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // State
+        // =============================================
+        const chatContainer = document.getElementById('chat-container');
+        const answerInput = document.getElementById('answer-input');
+        const sendBtn = document.getElementById('send-btn');
+        const endBtn = document.getElementById('end-btn');
+        const micBtn = document.getElementById('mic-btn');
+        const avatarRing = document.getElementById('avatar-ring');
+        const avatarStatus = document.getElementById('avatar-status');
+        const statusText = document.getElementById('status-text');
+        const soundWave = document.getElementById('sound-wave');
+        const voiceStatusText = document.getElementById('voice-status-text');
+
+        let interviewActive = false;
+        let isRecording = false;
+        let recognition = null;
+        let synth = window.speechSynthesis;
+        let selectedVoice = null;
+
+        // =============================================
+        // AI Interviewer Personas
+        // =============================================
+        const INTERVIEWERS = [
+            { name: "Priya Sharma", title: "Senior Technical Recruiter, Google" },
+            { name: "Rahul Mehta", title: "Engineering Manager, Amazon" },
+            { name: "Sarah Chen", title: "VP of Engineering, Microsoft" },
+            { name: "Arjun Patel", title: "Director of Hiring, Meta" },
+            { name: "Emily Rodriguez", title: "Tech Lead, Netflix" }
+        ];
+
+        function setRandomInterviewer() {
+            const p = INTERVIEWERS[Math.floor(Math.random() * INTERVIEWERS.length)];
+            document.getElementById('avatar-name').textContent = p.name;
+            document.getElementById('avatar-title').textContent = p.title;
+            return p;
+        }
+
+        // =============================================
+        // Text-to-Speech (Interviewer speaks)
+        // =============================================
+        function loadVoices() {
+            const voiceSelect = document.getElementById('voice-select');
+            const voices = synth.getVoices();
+            voiceSelect.innerHTML = '';
+
+            // Prefer female English voices for a professional feel
+            const preferred = voices.filter(v => v.lang.startsWith('en'));
+            const all = preferred.length ? preferred : voices;
+
+            all.forEach((v, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = v.name.substring(0, 30) + ' (' + v.lang + ')';
+                voiceSelect.appendChild(opt);
+
+                // Auto-select a female voice if available
+                if (!selectedVoice && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('google'))) {
+                    selectedVoice = v;
+                    opt.selected = true;
+                }
+            });
+
+            if (!selectedVoice && all.length) selectedVoice = all[0];
+
+            voiceSelect.addEventListener('change', () => {
+                selectedVoice = voices[parseInt(voiceSelect.value)];
+            });
+        }
+
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+
+        function speak(text, callback) {
+            if (!document.getElementById('voice-enabled').checked) {
+                if (callback) callback();
+                return;
+            }
+
+            // Cancel any ongoing speech
+            synth.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) utterance.voice = selectedVoice;
+            utterance.rate = 0.95;
+            utterance.pitch = 1.05;
+            utterance.volume = 1;
+
+            // Visual state: speaking
+            setAvatarState('speaking');
+            soundWave.classList.add('active');
+            voiceStatusText.textContent = 'Interviewer is speaking...';
+
+            utterance.onend = () => {
+                setAvatarState('waiting');
+                soundWave.classList.remove('active');
+                voiceStatusText.textContent = 'Voice idle';
+
+                // Auto-listen after question if enabled
+                if (document.getElementById('auto-listen').checked && interviewActive) {
+                    setTimeout(() => startListening(), 500);
+                }
+                if (callback) callback();
+            };
+
+            utterance.onerror = () => {
+                setAvatarState('waiting');
+                soundWave.classList.remove('active');
+                if (callback) callback();
+            };
+
+            synth.speak(utterance);
+        }
+
+        // =============================================
+        // Speech-to-Text (Candidate speaks)
+        // =============================================
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.warn('Speech Recognition not supported');
+                micBtn.title = 'Speech recognition not supported in this browser';
+                micBtn.style.opacity = '0.4';
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = (event) => {
+                let finalTranscript = '';
+                let interimTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+
+                if (finalTranscript) {
+                    answerInput.value += finalTranscript + ' ';
+                }
+                // Show interim in a subtle way
+                if (interimTranscript) {
+                    voiceStatusText.textContent = 'Hearing: ' + interimTranscript.substring(0, 60) + '...';
+                }
+            };
+
+            recognition.onend = () => {
+                if (isRecording) {
+                    // Restart if user hasn't stopped
+                    try { recognition.start(); } catch (e) { }
+                }
+            };
+
+            recognition.onerror = (e) => {
+                if (e.error !== 'no-speech') {
+                    console.warn('Speech recognition error:', e.error);
+                }
+            };
+        }
+
+        function startListening() {
+            if (!recognition) return;
+            isRecording = true;
+            micBtn.classList.add('recording');
+            micBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor;"><path d="M6 6h12v12H6z"/></svg>';
+            setAvatarState('listening');
+            soundWave.classList.add('active');
+            soundWave.querySelectorAll('.bar').forEach(b => b.style.background = 'var(--accent-green)');
+            voiceStatusText.textContent = 'Listening... Speak now!';
+            try { recognition.start(); } catch (e) { }
+        }
+
+        function stopListening() {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            micBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>';
+            setAvatarState('waiting');
+            soundWave.classList.remove('active');
+            soundWave.querySelectorAll('.bar').forEach(b => b.style.background = 'var(--accent-blue)');
+            voiceStatusText.textContent = 'Voice idle';
+            if (recognition) {
+                try { recognition.stop(); } catch (e) { }
+            }
+        }
+
+        function toggleMic() {
+            if (isRecording) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        // Spacebar shortcut for mic toggle
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && document.activeElement !== answerInput) {
+                e.preventDefault();
+                toggleMic();
+            }
+        });
+
+        // =============================================
+        // Avatar State Management
+        // =============================================
+        function setAvatarState(state) {
+            avatarRing.className = 'avatar-ring ' + state;
+            avatarStatus.className = 'avatar-status ' + state;
+            if (state === 'speaking') {
+                statusText.textContent = 'Speaking...';
+            } else if (state === 'listening') {
+                statusText.textContent = 'Listening...';
+            } else {
+                statusText.textContent = 'Waiting...';
+            }
+        }
+
+        // =============================================
+        // Chat Functions
+        // =============================================
+        function addBubble(text, type, header) {
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble ' + type;
+            bubble.innerHTML = '<div class="bubble-header">' + header + '</div><div>' + text + '</div>';
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const el = document.createElement('div');
+            el.className = 'chat-bubble interviewer';
+            el.id = 'typing';
+            el.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+            chatContainer.appendChild(el);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+
+        function updateProgress(info) {
+            if (!info) return;
+            const answered = info.questions_answered || 0;
+            const total = (info.total_hr_questions || 0) + (info.total_tech_questions || 0);
+            document.getElementById('progress-text').textContent = 'Question ' + answered + ' / ' + total;
+            document.getElementById('progress-fill').style.width = (total ? (answered / total * 100) : 0) + '%';
+        }
+
+        function updateRound(round) {
+            const el = document.getElementById('round-display');
+            if (round && round.includes('Technical')) {
+                el.className = 'round-indicator round-tech';
+                el.innerHTML = 'Technical Round';
+            } else {
+                el.className = 'round-indicator round-hr';
+                el.innerHTML = 'HR Round';
+            }
+        }
+
+        function updateEvaluation(evaluation) {
+            document.getElementById('last-eval').style.display = 'block';
+            document.getElementById('eval-correct').style.width = (evaluation.correctness_score || 0) + '%';
+            document.getElementById('eval-comm').style.width = (evaluation.communication_score || 0) + '%';
+            document.getElementById('eval-feedback').textContent = evaluation.feedback || '';
+        }
+
+        // =============================================
+        // Interview Session
+        // =============================================
+        async function startInterview() {
+            const role = document.getElementById('interview-role').value;
+            const voiceCheck = document.getElementById('enable-voice-modal');
+            document.getElementById('voice-enabled').checked = voiceCheck.checked;
+
+            document.getElementById('role-modal').style.display = 'none';
+            setRandomInterviewer();
+            initSpeechRecognition();
+
+            chatContainer.innerHTML = '';
+            addTypingIndicator();
+
+            const interviewer = document.getElementById('avatar-name').textContent;
+
+            try {
+                const res = await fetch('/api/interview/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role: role })
+                });
+                const data = await res.json();
+                removeTypingIndicator();
+
+                if (data.question) {
+                    const greeting = "Hello! I'm " + interviewer + ". Welcome to your interview today. Let's begin.";
+                    addBubble(greeting, 'interviewer', interviewer);
+
+                    // Speak the greeting, then the question
+                    speak(greeting, () => {
+                        setTimeout(() => {
+                            addBubble(data.question.question, 'interviewer', data.question.round || 'Interviewer');
+                            speak(data.question.question);
+                            updateRound(data.question.round);
+                        }, 800);
+                    });
+                }
+                updateProgress(data.session_info);
+                interviewActive = true;
+                endBtn.disabled = false;
+            } catch (e) {
+                removeTypingIndicator();
+                addBubble('Error starting interview. Please try again.', 'interviewer', 'System');
+            }
+        }
+
+        async function sendAnswer() {
+            if (!interviewActive) return;
+            const answer = answerInput.value.trim();
+            if (!answer) return;
+
+            // Stop mic if recording
+            if (isRecording) stopListening();
+            synth.cancel(); // Stop any ongoing speech
+
+            addBubble(answer, 'candidate', 'You');
+            answerInput.value = '';
+            sendBtn.disabled = true;
+
+            addTypingIndicator();
+            setAvatarState('waiting');
+
+            try {
+                const res = await fetch('/api/interview/respond', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answer: answer })
+                });
+                const data = await res.json();
+                removeTypingIndicator();
+
+                if (data.evaluation) {
+                    updateEvaluation(data.evaluation);
+                }
+
+                if (data.next_question) {
+                    updateRound(data.next_question.round);
+                    setTimeout(() => {
+                        const interviewer = document.getElementById('avatar-name').textContent;
+                        addBubble(data.next_question.question, 'interviewer', interviewer);
+                        speak(data.next_question.question);
+                    }, 600);
+                } else {
+                    const endMsg = 'Thank you for your time! The interview is now complete. Click "End Interview" to see your detailed report.';
+                    addBubble(endMsg, 'interviewer', 'Interviewer');
+                    speak(endMsg);
+                    interviewActive = false;
+                }
+
+                updateProgress(data.session_info);
+
+            } catch (e) {
+                removeTypingIndicator();
+                addBubble('Error processing your answer. Please try again.', 'interviewer', 'System');
+            }
+
+            sendBtn.disabled = false;
+        }
+
+        async function endInterview() {
+            if (isRecording) stopListening();
+            synth.cancel();
+            addTypingIndicator();
+
+            try {
+                const res = await fetch('/api/interview/end', { method: 'POST' });
+                const data = await res.json();
+                removeTypingIndicator();
+
+                interviewActive = false;
+                answerInput.disabled = true;
+                sendBtn.disabled = true;
+
+                const summary = 'Interview complete! You answered ' + data.summary.total_questions + ' questions. ' +
+                    'Your average score is ' + data.summary.avg_overall + ' out of 100.';
+
+                addBubble(
+                    summary + '<br><a href="/report" class="btn btn-primary" style="margin-top:12px;">View Full Report →</a>',
+                    'interviewer', 'Results'
+                );
+                speak(summary);
+            } catch (e) {
+                removeTypingIndicator();
+                addBubble('Error ending interview.', 'interviewer', 'System');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

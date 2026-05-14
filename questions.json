@@ -1,0 +1,239 @@
+{
+  "AI Engineer": {
+    "easy": [
+      {"type":"mcq","question":"What is the output of: print(type(3.14))","options":["<class 'float'>","<class 'int'>","<class 'double'>","<class 'decimal'>"],"answer":"<class 'float'>"},
+      {"type":"mcq","question":"Which of the following is used to define a block of code in Python?","options":["Indentation","Curly braces","Parentheses","Square brackets"],"answer":"Indentation"},
+      {"type":"mcq","question":"Which data structure uses key-value pairs in Python?","options":["Dictionary","List","Tuple","Set"],"answer":"Dictionary"},
+      {"type":"mcq","question":"What does the 'len()' function return when applied to a string?","options":["Number of characters","Number of words","ASCII value","Memory size"],"answer":"Number of characters"},
+      {"type":"short","question":"What is the difference between a list and a tuple in Python?","expected_keywords":["mutable","immutable","list","tuple","modify","change","ordered","bracket","parenthesis"]},
+      {"type":"short","question":"Define supervised learning and give two examples of algorithms.","expected_keywords":["labeled","data","training","output","input","classification","regression","algorithm","predict"]},
+      {"type":"coding","question":"Write a Python function to find the factorial of a number using recursion."},
+      {"type":"coding","question":"Write a Python program to check if a given string is a palindrome."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"What is the time complexity of binary search?","options":["O(log n)","O(n)","O(n log n)","O(1)"],"answer":"O(log n)"},
+      {"type":"mcq","question":"In DBMS, which normal form removes partial dependency?","options":["2NF","1NF","3NF","BCNF"],"answer":"2NF"},
+      {"type":"mcq","question":"Which layer of the OSI model is responsible for routing?","options":["Network Layer","Transport Layer","Data Link Layer","Session Layer"],"answer":"Network Layer"},
+      {"type":"short","question":"Explain the concept of overfitting in machine learning and how to prevent it.","expected_keywords":["training","generalization","regularization","validation","complexity","dropout","data","model"]},
+      {"type":"short","question":"What is normalization in databases? Explain up to 3NF.","expected_keywords":["redundancy","1NF","2NF","3NF","partial","transitive","dependency","atomic","key"]},
+      {"type":"coding","question":"Write a Python function to implement binary search on a sorted array."},
+      {"type":"coding","question":"Write an SQL query to find the second highest salary from an 'employees' table."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"Which scheduling algorithm may cause starvation?","options":["Shortest Job First","Round Robin","FCFS","None of these"],"answer":"Shortest Job First"},
+      {"type":"mcq","question":"What is the worst-case time complexity of QuickSort?","options":["O(n^2)","O(n log n)","O(n)","O(log n)"],"answer":"O(n^2)"},
+      {"type":"short","question":"Explain deadlock in operating systems. State the four necessary conditions.","expected_keywords":["mutual exclusion","hold and wait","no preemption","circular wait","resource","process","deadlock"]},
+      {"type":"short","question":"Explain how backpropagation works in neural networks.","expected_keywords":["gradient","chain rule","loss","weight","update","forward","backward","derivative","error"]},
+      {"type":"coding","question":"Write a Python program to implement a stack using a linked list with push, pop, and display operations."}
+    ]
+  },
+
+  "Backend Engineer": {
+    "easy": [
+      {"type":"mcq","question":"What is the output of: print(10 // 3)","options":["3","3.33","4","3.0"],"answer":"3"},
+      {"type":"mcq","question":"Which SQL command is used to retrieve data from a database?","options":["SELECT","INSERT","UPDATE","DELETE"],"answer":"SELECT"},
+      {"type":"mcq","question":"Which HTTP status code indicates a successful response?","options":["200","404","500","301"],"answer":"200"},
+      {"type":"short","question":"What is a REST API? Explain its key principles.","expected_keywords":["HTTP","endpoint","resource","stateless","client","server","JSON","request","response"]},
+      {"type":"coding","question":"Write a Python function to reverse a string without using slicing or built-in reverse."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which HTTP method is idempotent?","options":["PUT","POST","PATCH","None"],"answer":"PUT"},
+      {"type":"mcq","question":"What does ACID stand for in database transactions?","options":["Atomicity, Consistency, Isolation, Durability","Addition, Consistency, Integrity, Durability","Atomicity, Concurrency, Isolation, Data","None of these"],"answer":"Atomicity, Consistency, Isolation, Durability"},
+      {"type":"short","question":"Explain the difference between SQL and NoSQL databases with examples.","expected_keywords":["relational","document","schema","flexible","table","collection","join","scale","SQL","NoSQL"]},
+      {"type":"coding","question":"Write an SQL query to find employees who earn more than the average salary in their department."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"In a B+ tree of order m, what is the maximum number of children a node can have?","options":["m","m-1","m+1","2m"],"answer":"m"},
+      {"type":"short","question":"Explain database indexing. What are clustered and non-clustered indexes?","expected_keywords":["index","search","B-tree","clustered","non-clustered","performance","key","table","lookup"]},
+      {"type":"coding","question":"Write a Python function that implements a LRU Cache using a dictionary and doubly linked list."}
+    ]
+  },
+
+  "Frontend Engineer": {
+    "easy": [
+      {"type":"mcq","question":"Which HTML tag is used to create a hyperlink?","options":["<a>","<link>","<href>","<url>"],"answer":"<a>"},
+      {"type":"mcq","question":"What does CSS stand for?","options":["Cascading Style Sheets","Computer Style Sheets","Creative Style System","Cascading System Sheets"],"answer":"Cascading Style Sheets"},
+      {"type":"short","question":"What is the difference between 'id' and 'class' selectors in CSS?","expected_keywords":["id","class","unique","multiple","hash","dot","selector","element","specificity"]},
+      {"type":"coding","question":"Write JavaScript code to find the largest element in an array without using Math.max."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which of the following is not a JavaScript data type?","options":["Float","String","Boolean","Undefined"],"answer":"Float"},
+      {"type":"mcq","question":"What is the purpose of the 'this' keyword in JavaScript?","options":["Refers to the current object","Creates a new variable","Declares a function","None of these"],"answer":"Refers to the current object"},
+      {"type":"short","question":"Explain event bubbling and event capturing in JavaScript.","expected_keywords":["bubble","capture","parent","child","propagation","DOM","event","handler","addEventListener"]},
+      {"type":"coding","question":"Write a JavaScript function to debounce another function with a given delay."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"What is the time complexity of accessing an element in a JavaScript Map?","options":["O(1)","O(n)","O(log n)","O(n^2)"],"answer":"O(1)"},
+      {"type":"short","question":"Explain the Virtual DOM in React and how reconciliation works.","expected_keywords":["virtual","copy","diff","reconciliation","performance","render","update","real DOM","component"]},
+      {"type":"coding","question":"Write a JavaScript function to deep clone an object handling nested objects and arrays."}
+    ]
+  },
+
+  "Data Scientist": {
+    "easy": [
+      {"type":"mcq","question":"Which Python library is primarily used for data manipulation with DataFrames?","options":["Pandas","NumPy","Matplotlib","Scikit-learn"],"answer":"Pandas"},
+      {"type":"mcq","question":"What type of variable takes only discrete values?","options":["Categorical","Continuous","Float","Real"],"answer":"Categorical"},
+      {"type":"short","question":"What is the difference between mean, median, and mode? When would you use each?","expected_keywords":["mean","median","mode","average","middle","frequent","outlier","central","tendency"]},
+      {"type":"coding","question":"Write Python code using pandas to read a CSV file, remove duplicate rows, and display the shape."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which metric is most appropriate for evaluating an imbalanced classification dataset?","options":["F1 Score","Accuracy","R-squared","Mean Absolute Error"],"answer":"F1 Score"},
+      {"type":"mcq","question":"What does PCA primarily do?","options":["Reduces dimensionality","Increases accuracy","Removes outliers","Fills missing values"],"answer":"Reduces dimensionality"},
+      {"type":"short","question":"Explain the bias-variance tradeoff with examples.","expected_keywords":["bias","variance","underfitting","overfitting","complexity","error","generalization","model","tradeoff"]},
+      {"type":"coding","question":"Write Python code to train a decision tree classifier on the iris dataset using sklearn and print accuracy."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"Which regularization technique adds the absolute value of coefficients as penalty?","options":["L1 (Lasso)","L2 (Ridge)","Dropout","Batch Normalization"],"answer":"L1 (Lasso)"},
+      {"type":"short","question":"Explain cross-validation. Why is k-fold preferred over a simple train-test split?","expected_keywords":["k-fold","train","test","split","generalization","overfitting","validation","variance","robust"]},
+      {"type":"coding","question":"Write Python code to implement K-Nearest Neighbors classification from scratch without using sklearn."}
+    ]
+  },
+
+  "Data Analyst": {
+    "easy": [
+      {"type":"mcq","question":"Which SQL clause is used to filter rows based on a condition?","options":["WHERE","HAVING","GROUP BY","ORDER BY"],"answer":"WHERE"},
+      {"type":"mcq","question":"Which Excel function returns the number of cells that contain numeric values?","options":["COUNT","COUNTA","COUNTIF","SUM"],"answer":"COUNT"},
+      {"type":"short","question":"What is the difference between WHERE and HAVING clauses in SQL?","expected_keywords":["WHERE","HAVING","filter","group","aggregate","condition","row","before","after"]},
+      {"type":"coding","question":"Write an SQL query to find the total sales amount per region from a 'sales' table."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which type of JOIN returns all rows from both tables?","options":["FULL OUTER JOIN","INNER JOIN","LEFT JOIN","CROSS JOIN"],"answer":"FULL OUTER JOIN"},
+      {"type":"mcq","question":"What does a box plot primarily show?","options":["Distribution and outliers","Correlation","Trend over time","Proportion"],"answer":"Distribution and outliers"},
+      {"type":"short","question":"Explain the ETL process with a real-world example.","expected_keywords":["extract","transform","load","data","pipeline","source","destination","warehouse","clean"]},
+      {"type":"coding","question":"Write an SQL query using a subquery to find employees whose salary is above the company average."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"Which type of database schema is optimized for read-heavy analytical queries?","options":["Star Schema","Normalized Schema","Network Schema","Hierarchical Schema"],"answer":"Star Schema"},
+      {"type":"short","question":"Explain the difference between OLTP and OLAP systems with examples.","expected_keywords":["transaction","analytical","real-time","historical","normalized","denormalized","query","reporting","OLTP","OLAP"]},
+      {"type":"coding","question":"Write an SQL query using window functions to find the running total of sales ordered by date."}
+    ]
+  },
+
+  "ML Engineer": {
+    "easy": [
+      {"type":"mcq","question":"Which of the following is an unsupervised learning algorithm?","options":["K-Means","Linear Regression","Logistic Regression","Decision Tree"],"answer":"K-Means"},
+      {"type":"mcq","question":"What is the purpose of splitting data into training and test sets?","options":["To evaluate model performance on unseen data","To increase training speed","To reduce dataset size","To remove outliers"],"answer":"To evaluate model performance on unseen data"},
+      {"type":"short","question":"What is the difference between classification and regression? Give examples.","expected_keywords":["classification","regression","discrete","continuous","category","predict","label","value","output"]},
+      {"type":"coding","question":"Write Python code to split a dataset into training and testing sets using sklearn (80-20 split)."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which technique is used to prevent overfitting by adding a penalty term?","options":["Regularization","Normalization","Standardization","Augmentation"],"answer":"Regularization"},
+      {"type":"short","question":"Explain the difference between bagging and boosting ensemble methods.","expected_keywords":["bagging","boosting","parallel","sequential","variance","bias","bootstrap","weight","ensemble"]},
+      {"type":"coding","question":"Write Python code to train a Random Forest classifier and print the feature importances."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"What is the purpose of a confusion matrix?","options":["To evaluate classification model performance","To reduce dimensionality","To normalize data","To detect outliers"],"answer":"To evaluate classification model performance"},
+      {"type":"short","question":"Explain hyperparameter tuning. Compare Grid Search and Random Search.","expected_keywords":["grid search","random search","cross-validation","parameter","optimize","performance","combination","space","tuning"]},
+      {"type":"coding","question":"Write Python code to implement GridSearchCV for tuning a Support Vector Machine classifier."}
+    ]
+  },
+
+  "Full Stack Developer": {
+    "easy": [
+      {"type":"mcq","question":"Which of the following is a valid JavaScript variable declaration?","options":["let x = 5;","variable x = 5;","int x = 5;","define x = 5;"],"answer":"let x = 5;"},
+      {"type":"mcq","question":"What does JSON stand for?","options":["JavaScript Object Notation","Java Standard Output Notation","JavaScript Online Network","Java Source Object Node"],"answer":"JavaScript Object Notation"},
+      {"type":"short","question":"What is the difference between GET and POST HTTP methods?","expected_keywords":["GET","POST","retrieve","send","data","body","URL","parameter","server","idempotent"]},
+      {"type":"coding","question":"Write a JavaScript function to check if a number is prime."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which database is document-oriented?","options":["MongoDB","MySQL","PostgreSQL","SQLite"],"answer":"MongoDB"},
+      {"type":"short","question":"Explain the request-response lifecycle in a web application.","expected_keywords":["client","server","HTTP","request","response","browser","route","status","DNS","render"]},
+      {"type":"coding","question":"Write an SQL query to find the top 3 departments with the highest average salary."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"What is the purpose of a reverse proxy server?","options":["To distribute client requests to backend servers","To cache DNS queries","To encrypt database connections","To compile JavaScript"],"answer":"To distribute client requests to backend servers"},
+      {"type":"short","question":"Explain JWT authentication and its security considerations.","expected_keywords":["token","header","payload","signature","stateless","encode","decode","expire","secret","verify"]},
+      {"type":"coding","question":"Write a Python function to implement a simple token-based authentication middleware."}
+    ]
+  },
+
+  "DevOps Engineer": {
+    "easy": [
+      {"type":"mcq","question":"Which command initializes a new Git repository?","options":["git init","git start","git create","git new"],"answer":"git init"},
+      {"type":"short","question":"What is version control and why is it important in software development?","expected_keywords":["version","track","changes","collaborate","history","branch","merge","repository","code"]},
+      {"type":"coding","question":"Write a shell script that takes a directory path as argument and lists all files with their sizes."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which tool is used to build and run containerized applications?","options":["Docker","Git","Ansible","Nagios"],"answer":"Docker"},
+      {"type":"short","question":"Explain the CI/CD pipeline and its stages.","expected_keywords":["continuous","integration","delivery","deploy","build","test","automate","pipeline","release","merge"]},
+      {"type":"coding","question":"Write a Dockerfile for a Python Flask application that runs on port 5000."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"In Kubernetes, what is a Pod?","options":["Smallest deployable unit containing one or more containers","A type of service","A storage volume","A network policy"],"answer":"Smallest deployable unit containing one or more containers"},
+      {"type":"short","question":"Explain Infrastructure as Code and compare Terraform with Ansible.","expected_keywords":["infrastructure","code","automate","reproducible","terraform","ansible","declarative","imperative","provision","configuration"]},
+      {"type":"coding","question":"Write a basic Terraform configuration to provision a cloud compute instance with variables for region and instance type."}
+    ]
+  },
+
+  "Cybersecurity Engineer": {
+    "easy": [
+      {"type":"mcq","question":"What does the 'S' in HTTPS stand for?","options":["Secure","Server","System","Standard"],"answer":"Secure"},
+      {"type":"short","question":"What is the difference between symmetric and asymmetric encryption?","expected_keywords":["symmetric","asymmetric","key","public","private","encrypt","decrypt","single","pair","AES","RSA"]},
+      {"type":"coding","question":"Write Python code to hash a password using the hashlib library with SHA-256."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which type of attack involves injecting malicious SQL statements?","options":["SQL Injection","Cross-site Scripting","DDoS","Phishing"],"answer":"SQL Injection"},
+      {"type":"short","question":"Explain how a firewall works and the difference between stateful and stateless firewalls.","expected_keywords":["traffic","filter","rule","port","allow","block","network","packet","stateful","stateless","connection"]},
+      {"type":"coding","question":"Write a Python function that validates password strength (minimum 8 characters, at least one uppercase, one digit, one special character)."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"Which protocol provides encryption for data in transit on the web?","options":["TLS","FTP","SMTP","SNMP"],"answer":"TLS"},
+      {"type":"short","question":"Explain the OWASP Top 10 vulnerabilities. Describe any three in detail.","expected_keywords":["injection","broken authentication","XSS","CSRF","security","misconfiguration","sensitive data","access control","vulnerability","OWASP"]},
+      {"type":"coding","question":"Write Python code to encrypt and decrypt text using the Fernet symmetric encryption from the cryptography library."}
+    ]
+  },
+
+  "Software Engineer": {
+    "easy": [
+      {"type":"mcq","question":"What is the output of: print(2 ** 3)","options":["8","6","9","23"],"answer":"8"},
+      {"type":"mcq","question":"Which data structure follows FIFO (First In First Out) ordering?","options":["Queue","Stack","Tree","Graph"],"answer":"Queue"},
+      {"type":"mcq","question":"What is the default return type of the input() function in Python?","options":["str","int","float","bool"],"answer":"str"},
+      {"type":"short","question":"Explain the four pillars of Object-Oriented Programming.","expected_keywords":["encapsulation","inheritance","polymorphism","abstraction","class","object","method","data","OOP"]},
+      {"type":"coding","question":"Write a Python function to check if a given number is prime."},
+      {"type":"coding","question":"Write a Python function to reverse a linked list."}
+    ],
+    "medium": [
+      {"type":"mcq","question":"Which sorting algorithm has O(n log n) average-case time complexity?","options":["Merge Sort","Bubble Sort","Selection Sort","Insertion Sort"],"answer":"Merge Sort"},
+      {"type":"mcq","question":"What is the purpose of an index in a relational database?","options":["Speed up query performance","Store backup data","Encrypt data","Create relationships"],"answer":"Speed up query performance"},
+      {"type":"short","question":"Explain the difference between a process and a thread in operating systems.","expected_keywords":["process","thread","memory","shared","independent","lightweight","concurrent","address space","context switch"]},
+      {"type":"short","question":"What are the differences between TCP and UDP protocols?","expected_keywords":["TCP","UDP","connection","reliable","unreliable","ordered","fast","handshake","datagram","stream"]},
+      {"type":"coding","question":"Write a Python function to find two numbers in an array that add up to a given target sum."},
+      {"type":"coding","question":"Write an SQL query to find the third highest salary from an employees table without using LIMIT."}
+    ],
+    "hard": [
+      {"type":"mcq","question":"What is the time complexity of searching in a balanced Binary Search Tree?","options":["O(log n)","O(n)","O(n^2)","O(1)"],"answer":"O(log n)"},
+      {"type":"mcq","question":"Which design pattern ensures only one instance of a class exists?","options":["Singleton","Factory","Observer","Strategy"],"answer":"Singleton"},
+      {"type":"short","question":"Explain how garbage collection works in Python. What are reference counting and generational GC?","expected_keywords":["memory","reference","count","cycle","heap","automatic","deallocate","garbage","generational","generation"]},
+      {"type":"short","question":"Explain the concept of deadlock with an example. How can it be prevented?","expected_keywords":["deadlock","mutual exclusion","hold","wait","circular","preemption","resource","prevention","avoidance","process"]},
+      {"type":"coding","question":"Write a Python implementation of a binary search tree with insert, search, and inorder traversal."},
+      {"type":"coding","question":"Write a Python function to detect a cycle in a linked list using Floyd's algorithm."}
+    ]
+  },
+
+  "Aptitude": {
+    "quantitative": [
+      {"type":"mcq","question":"A train 150m long passes a pole in 15 seconds. What is the speed of the train in km/h?","options":["36 km/h","40 km/h","45 km/h","30 km/h"],"answer":"36 km/h"},
+      {"type":"mcq","question":"If the cost price of an article is Rs.400 and it is sold at 15% profit, what is the selling price?","options":["Rs.460","Rs.450","Rs.415","Rs.500"],"answer":"Rs.460"},
+      {"type":"mcq","question":"A can complete a work in 12 days and B can complete it in 18 days. Working together, how many days will they take?","options":["7.2 days","8 days","6 days","9 days"],"answer":"7.2 days"},
+      {"type":"mcq","question":"What is the compound interest on Rs.5000 at 10% per annum for 2 years?","options":["Rs.1050","Rs.1000","Rs.1100","Rs.950"],"answer":"Rs.1050"},
+      {"type":"mcq","question":"The ratio of boys to girls in a class is 3:5. If there are 40 students, how many are boys?","options":["15","20","25","18"],"answer":"15"},
+      {"type":"mcq","question":"A pipe can fill a tank in 8 hours and another pipe can empty it in 12 hours. If both are opened, how long to fill the tank?","options":["24 hours","20 hours","16 hours","12 hours"],"answer":"24 hours"},
+      {"type":"mcq","question":"The average of 5 numbers is 20. If one number is excluded, the average becomes 18. What is the excluded number?","options":["28","24","22","30"],"answer":"28"},
+      {"type":"mcq","question":"A man walks 5 km north, then 3 km east, then 5 km south. How far is he from the starting point?","options":["3 km","5 km","8 km","13 km"],"answer":"3 km"},
+      {"type":"mcq","question":"If 6 machines can produce 240 units in 4 hours, how many units can 10 machines produce in 6 hours?","options":["600","500","400","720"],"answer":"600"},
+      {"type":"mcq","question":"Two numbers are in the ratio 3:7. If their sum is 50, what is the smaller number?","options":["15","20","25","10"],"answer":"15"}
+    ],
+    "logical": [
+      {"type":"mcq","question":"All managers are employees. Some employees are engineers. Which conclusion is valid?","options":["Some managers may be engineers","All engineers are managers","No manager is an engineer","All employees are managers"],"answer":"Some managers may be engineers"},
+      {"type":"mcq","question":"If COMPUTER is coded as DPNQVUFS, how is DATA coded?","options":["EBUB","DCVC","ECUB","DBUB"],"answer":"EBUB"},
+      {"type":"mcq","question":"Find the odd one out: 2, 5, 10, 17, 28, 37","options":["28","37","17","10"],"answer":"28"},
+      {"type":"mcq","question":"P is taller than Q. R is shorter than Q but taller than S. Who is the shortest?","options":["S","R","Q","P"],"answer":"S"},
+      {"type":"mcq","question":"What comes next in the series: 3, 9, 27, 81, ?","options":["243","162","192","216"],"answer":"243"},
+      {"type":"mcq","question":"Statement: All books are pages. All pages are words. Conclusion: All books are words.","options":["True","False","Cannot determine","Partially true"],"answer":"True"},
+      {"type":"mcq","question":"A clock shows 3:15. What is the angle between the hour and minute hands?","options":["7.5 degrees","0 degrees","15 degrees","22.5 degrees"],"answer":"7.5 degrees"},
+      {"type":"mcq","question":"If Monday falls on 1st of a month, what day is 23rd of that month?","options":["Tuesday","Wednesday","Thursday","Monday"],"answer":"Tuesday"},
+      {"type":"mcq","question":"In a row of students, Ravi is 12th from the left and 18th from the right. How many students are there?","options":["29","30","28","31"],"answer":"29"},
+      {"type":"mcq","question":"If 5 workers can build a wall in 10 days, how many days will 10 workers take?","options":["5 days","8 days","15 days","20 days"],"answer":"5 days"}
+    ]
+  }
+}

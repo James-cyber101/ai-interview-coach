@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results - AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .score-hero {
+            text-align: center;
+            padding: 48px;
+            margin-bottom: 32px;
+        }
+
+        .big-score {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .question-review {
+            padding: 20px;
+            margin-bottom: 12px;
+            border-left: 3px solid;
+        }
+
+        .question-review.correct {
+            border-color: var(--accent-green);
+        }
+
+        .question-review.incorrect {
+            border-color: var(--accent-red);
+        }
+
+        .question-review.partial {
+            border-color: var(--accent-orange);
+        }
+
+        .answer-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .answer-box {
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        .answer-yours {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .answer-correct {
+            background: rgba(0, 230, 118, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .answer-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/interview">Interview</a>
+            <a href="/report">Report</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="glass-card score-hero animate-fade-in">
+            {% set score_color = 'var(--accent-green)' if results.overall_score >= 70 else ('var(--accent-orange)' if
+            results.overall_score >= 40 else 'var(--accent-red)') %}
+            <div class="big-score" style="color:{{ score_color }};">{{ results.overall_score }}%</div>
+            <div style="font-size:20px; font-weight:600; margin-bottom:8px;">Overall Score</div>
+            <div style="color:var(--text-secondary);">{{ role }} - {{ level|capitalize }} Level</div>
+        </div>
+
+        <div class="result-grid">
+            <div class="glass-card stat-card animate-fade-in animate-delay-1">
+                <div class="stat-value" style="color:var(--accent-blue);">{{ results.mcq_result.score }}/{{
+                    results.mcq_result.total }}</div>
+                <div class="stat-label">MCQ Score</div>
+            </div>
+            <div class="glass-card stat-card animate-fade-in animate-delay-2">
+                <div class="stat-value" style="color:var(--accent-purple);">{{ results.short_results|length }}</div>
+                <div class="stat-label">Short Answers</div>
+            </div>
+            <div class="glass-card stat-card animate-fade-in animate-delay-3">
+                <div class="stat-value" style="color:var(--accent-cyan);">{{ results.coding_results|length }}</div>
+                <div class="stat-label">Coding Questions</div>
+            </div>
+        </div>
+
+        {% if results.mcq_result.details %}
+        <div class="glass-card animate-fade-in" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:20px;">MCQ Review</h3>
+            {% for d in results.mcq_result.details %}
+            <div class="question-review {{ 'correct' if d.is_correct else 'incorrect' }}">
+                <div style="font-weight:600; margin-bottom:8px;">{{ d.question }}</div>
+                <div class="answer-compare">
+                    <div class="answer-box answer-yours">
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">YOUR ANSWER</div>
+                        <div style="color:{{ 'var(--accent-green)' if d.is_correct else 'var(--accent-red)' }};">
+                            {{ d.user_answer }}
+                        </div>
+                    </div>
+                    {% if not d.is_correct %}
+                    <div class="answer-box answer-correct">
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">CORRECT ANSWER</div>
+                        <div style="color:var(--accent-green);">{{ d.correct_answer }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if results.short_results %}
+        <div class="glass-card animate-fade-in" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:20px;">Short Answer Evaluation</h3>
+            {% for sr in results.short_results %}
+            <div
+                class="question-review {{ 'correct' if sr.score >= 70 else ('partial' if sr.score >= 40 else 'incorrect') }}">
+                <div style="font-weight:600; margin-bottom:8px;">{{ sr.question }}</div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <span
+                        class="badge {{ 'badge-green' if sr.score >= 70 else ('badge-orange' if sr.score >= 40 else 'badge-red') }}">{{
+                        sr.score }}/100</span>
+                </div>
+                <div style="font-size:13px; color:var(--text-secondary); margin-bottom:4px;">{{ sr.feedback }}</div>
+                <div style="font-size:13px; color:var(--accent-orange);">{{ sr.improvements }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if results.coding_results %}
+        <div class="glass-card animate-fade-in" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:20px;">Coding Evaluation</h3>
+            {% for cr in results.coding_results %}
+            <div
+                class="question-review {{ 'correct' if cr.score >= 70 else ('partial' if cr.score >= 40 else 'incorrect') }}">
+                <div style="font-weight:600; margin-bottom:8px;">{{ cr.question }}</div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <span
+                        class="badge {{ 'badge-green' if cr.score >= 70 else ('badge-orange' if cr.score >= 40 else 'badge-red') }}">{{
+                        cr.score }}/100</span>
+                </div>
+                <div style="font-size:13px; color:var(--text-secondary); margin-bottom:4px;">{{ cr.feedback }}</div>
+                <div style="font-size:13px; color:var(--accent-orange);">{{ cr.improvements }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div style="text-align:center; margin-top:32px;" class="animate-fade-in animate-delay-3">
+            <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+                <a href="/interview" class="btn btn-primary btn-lg">Start AI Interview</a>
+                <a href="/roles" class="btn btn-outline btn-lg">Retake Test</a>
+                <a href="/report" class="btn btn-outline btn-lg">View Full Report</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

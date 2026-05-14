@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Test - AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .test-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .question-card {
+            margin-bottom: 20px;
+            padding: 28px;
+        }
+
+        .question-card .q-number {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        .question-card .q-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .option-label:hover {
+            background: var(--bg-glass);
+            border-color: var(--accent-blue);
+        }
+
+        .option-label input[type="radio"] {
+            accent-color: var(--accent-blue);
+        }
+
+        .option-label input[type="radio"]:checked+span {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar .glass-card {
+            padding: 24px;
+        }
+
+        textarea.code-input {
+            width: 100%;
+            min-height: 120px;
+            background: #0a0e1a;
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            color: #00e676;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 16px;
+            resize: vertical;
+        }
+
+        .q-type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .test-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            <a href="/roles">Back</a>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header animate-fade-in">
+            <h1>Technical Assessment</h1>
+            <p>{{ role }} - {{ level|capitalize }} Level</p>
+        </div>
+
+        <form method="POST" action="/submit_test" id="test-form">
+            <div class="test-layout">
+                <div>
+                    {% for q in questions %}
+                    {% set qnum = loop.index %}
+                    <div class="glass-card question-card animate-fade-in" id="q-card-{{ qnum }}">
+                        <div class="q-number">
+                            Question {{ qnum }} of {{ questions|length }}
+                            {% if q.type == 'mcq' %}<span class="q-type-badge badge-blue">MCQ</span>
+                            {% elif q.type == 'short' %}<span class="q-type-badge badge-purple">Short Answer</span>
+                            {% elif q.type == 'coding' %}<span class="q-type-badge badge-green">Coding</span>
+                            {% endif %}
+                        </div>
+                        <div class="q-text">{{ q.question }}</div>
+
+                        {% if q.type == "mcq" %}
+                        {% for opt in q.options %}
+                        <label class="option-label">
+                            <input type="radio" name="q{{ qnum }}" value="{{ opt }}">
+                            <span>{{ opt }}</span>
+                        </label>
+                        {% endfor %}
+                        {% elif q.type == "short" %}
+                        <input type="text" name="q{{ qnum }}" class="form-input" placeholder="Type your answer...">
+                        {% elif q.type == "coding" %}
+                        <textarea name="q{{ qnum }}" class="code-input"
+                            placeholder="# Write your code here..."></textarea>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+                        Submit Test
+                    </button>
+                </div>
+
+                <div class="sidebar">
+                    <div class="glass-card" style="text-align:center;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">
+                            Time Remaining</div>
+                        <div class="timer" id="timer" style="justify-content:center;">
+                            <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24">
+                                <path
+                                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                            </svg>
+                            <span id="timer-display">--:--</span>
+                        </div>
+                        <div class="progress-bar" style="margin-top:16px;">
+                            <div class="progress-fill" id="timer-bar" style="width:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="margin-top:16px;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:12px;">
+                            Question Map</div>
+                        <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;">
+                            {% for q in questions %}
+                            <a href="#q-card-{{ loop.index }}"
+                                style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background:var(--bg-glass); border:1px solid var(--border-glass); font-size:13px; font-weight:600; color:var(--text-secondary); text-decoration:none; transition:all 0.2s;"
+                                class="q-nav-btn" id="qnav-{{ loop.index }}">
+                                {{ loop.index }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="margin-top:16px;">
+                        <div
+                            style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">
+                            Test Info</div>
+                        <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px;">Total: <strong>{{
+                                questions|length }}</strong> questions</div>
+                        <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px;">Role: <strong>{{
+                                role }}</strong></div>
+                        <div style="font-size:14px; color:var(--text-secondary);">Level: <strong>{{ level|capitalize
+                                }}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const totalTime = {{ time }};
+        let remaining = totalTime;
+        const display = document.getElementById('timer-display');
+        const bar = document.getElementById('timer-bar');
+        const timerEl = document.getElementById('timer');
+
+        function updateTimer() {
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            display.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+            bar.style.width = (remaining / totalTime * 100) + '%';
+
+            if (remaining <= 60) {
+                timerEl.className = 'timer danger';
+            } else if (remaining <= totalTime * 0.3) {
+                timerEl.className = 'timer warning';
+            }
+
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('test-form').submit();
+            }
+            remaining--;
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        document.querySelectorAll('input, textarea').forEach(input => {
+            const handler = () => {
+                const card = input.closest('.question-card');
+                if (!card) return;
+                const idx = card.id.replace('q-card-', '');
+                const nav = document.getElementById('qnav-' + idx);
+                if (nav) { nav.style.background = 'rgba(79,124,255,0.3)'; nav.style.borderColor = 'var(--accent-blue)'; }
+            };
+            input.addEventListener('change', handler);
+            input.addEventListener('input', handler);
+        });
+    </script>
+
+</body>
+
+</html>

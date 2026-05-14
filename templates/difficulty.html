@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Difficulty - AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .diff-card {
+            text-align: center;
+            padding: 48px 32px;
+        }
+
+        .diff-card h2 {
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .diff-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .diff-card .info {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+
+        .diff-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .diff-icon-wrap svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span>AI Interview Coach</span>
+        </a>
+        <nav>
+            <a href="/upload_resume">Resume</a>
+            <a href="/roles">Practice Test</a>
+            <a href="/interview">Interview</a>
+            <a href="/logout" class="btn-nav">Logout</a>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header animate-fade-in">
+            <h1>Select Difficulty</h1>
+            <p>Choose the challenge level for your assessment</p>
+        </div>
+
+        <a href="/roles" class="btn btn-outline" style="margin-bottom:32px;">Back to Roles</a>
+
+        <div class="grid-3">
+            <div class="glass-card diff-card animate-fade-in animate-delay-1">
+                <div class="diff-icon-wrap" style="background:rgba(0,230,118,0.15); color:var(--accent-green);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+                <h2>Easy</h2>
+                <p>Fundamentals and basic concepts. Great for warming up.</p>
+                <a href="/technical?role={{ role }}&level=easy&time=300" class="btn btn-success btn-lg"
+                    style="width:100%;">Start Easy</a>
+                <div class="info">5 min - Basic questions</div>
+            </div>
+
+            <div class="glass-card diff-card animate-fade-in animate-delay-2" style="border-color:rgba(255,145,0,0.2);">
+                <div class="diff-icon-wrap" style="background:rgba(255,145,0,0.15); color:var(--accent-orange);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                    </svg>
+                </div>
+                <h2>Medium</h2>
+                <p>Intermediate questions. Similar to TCS NQT screening rounds.</p>
+                <a href="/technical?role={{ role }}&level=medium&time=600" class="btn btn-warning btn-lg"
+                    style="width:100%;">Start Medium</a>
+                <div class="info">10 min - Intermediate</div>
+            </div>
+
+            <div class="glass-card diff-card animate-fade-in animate-delay-3" style="border-color:rgba(255,23,68,0.2);">
+                <div class="diff-icon-wrap" style="background:rgba(255,23,68,0.15); color:var(--accent-red);">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 15H8.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h7c.28 0 .5.22.5.5s-.22.5-.5.5zm0-3H8.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h7c.28 0 .5.22.5.5s-.22.5-.5.5zM12 4l4 8H8l4-8z" />
+                    </svg>
+                </div>
+                <h2>Hard</h2>
+                <p>Advanced problems. Top company interview level.</p>
+                <a href="/technical?role={{ role }}&level=hard&time=900" class="btn btn-danger btn-lg"
+                    style="width:100%;">Start Hard</a>
+                <div class="info">15 min - Advanced</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
