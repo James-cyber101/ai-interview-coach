@@ -13,6 +13,7 @@ import re
 # ---------------------------------------------------------------------------
 
 HR_QUESTIONS = [
+    # --- Core ---
     "Tell me about yourself.",
     "Why do you want to work at our company?",
     "What are your greatest strengths?",
@@ -27,7 +28,23 @@ HR_QUESTIONS = [
     "What are your salary expectations?",
     "Do you prefer working independently or in a team?",
     "How do you prioritize your tasks?",
-    "What do you know about our company?"
+    "What do you know about our company?",
+    # --- FAANG-style behavioral ---
+    "Tell me about a time you took ownership of a project that was failing. What did you do and what was the outcome?",
+    "Describe a situation where you had to make a critical decision with incomplete data. How did you approach it?",
+    "Give an example of when you disagreed with your manager or team lead. How did you handle the disagreement?",
+    "Tell me about a time you had to deliver results under an extremely tight deadline with limited resources.",
+    "Describe a situation where you identified a problem before anyone else noticed it. What actions did you take?",
+    "Tell me about a time you had to learn a completely new technology or domain quickly to deliver on a project.",
+    "Give an example of when you went above and beyond what was expected to improve the customer or user experience.",
+    "Describe a time when you received harsh or critical feedback. How did you respond and what did you change?",
+    "Tell me about a project where you had to influence people outside your team without having direct authority over them.",
+    "Give an example of a time you simplified a complex process or system. What was the impact?",
+    "Describe a situation where you had to balance multiple competing priorities. How did you decide what to focus on?",
+    "Tell me about a time you failed at something significant. What did you learn and how did you recover?",
+    "Give an example of when you challenged the status quo or proposed an unconventional solution to a problem.",
+    "Describe a time when you had to work with a difficult or underperforming teammate. How did you handle it?",
+    "Tell me about a decision you made that was unpopular. How did you navigate the pushback and what was the result?"
 ]
 
 TECHNICAL_QUESTIONS_BY_ROLE = {

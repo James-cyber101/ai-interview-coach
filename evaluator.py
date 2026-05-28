@@ -16,7 +16,6 @@ from collections import Counter
 def _tokenize(text):
     """Simple word-level tokenizer."""
     return re.findall(r"[a-z0-9]+", text.lower())
--
 
 def _cosine_similarity(text_a, text_b):
     """Compute cosine similarity between two texts using word frequency vectors."""
